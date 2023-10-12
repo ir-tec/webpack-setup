@@ -10,7 +10,6 @@ This project is a full setup of Webpack with Babel, React JS, TypeScript, and Sa
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Configuration](#configuration)
 - [Folder Structure](#folder-structure)
 - [Scripts](#scripts)
 - [License](#license)
