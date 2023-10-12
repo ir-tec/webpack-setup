@@ -4,7 +4,8 @@ const bundleAnalyzer = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 module.exports = {
   mode: "development",
   //------------------- In order to make code spliting you can pass a object to entry
-  entry: { bundle: path.resolve(__dirname, "src/index.js") },
+  entry: { bundle: path.resolve(__dirname, "src/index.tsx") },
+  target: "web",
   output: {
     path: path.resolve(__dirname, "dist"),
     //----------------- If you pass a [name].js to file name it will take the name of entry key name
@@ -12,26 +13,43 @@ module.exports = {
     clean: true,
     assetModuleFilename: "[name][ext]",
   },
+  resolve: {
+    extensions: [".js", ".ts", ".tsx", ".jsx"],
+  },
+
   module: {
     rules: [
       {
-        test: /\.scss$/,
+        test: /\.(scss|css)$/,
+        exclude: "/node_modules/",
         use: ["style-loader", "css-loader", "sass-loader"],
       },
       // In order to our code to be compatible with older browser we install babel and it's related dependencies and configure it in rules section
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env"],
+            presets: [
+              "@babel/preset-env",
+              "@babel/preset-react",
+              "@babel/preset-typescript",
+            ],
           },
+        },
+      },
+      // In order to our typescript code to be compatible with older browser we install babel and it's related dependencies and configure it in rules section
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "ts-loader",
         },
       },
       // This rule configs the webpack asset loader for serving img files
       {
-        test: /\.(png|jpg|jpeg|svg)$/i,
+        test: /\.(png|jpg|jpeg|svg|ttf)$/i,
         type: "asset/resource",
       },
     ],
@@ -53,8 +71,8 @@ module.exports = {
     new htmlWebpackPlugin({
       title: "Webpack App template",
       filename: "index.html",
-      template: "src/template.html",
+      template: "src/index.html",
     }),
-    // new bundleAnalyzer(),
+    //  new bundleAnalyzer(),
   ],
 };
